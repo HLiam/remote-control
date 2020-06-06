@@ -106,12 +106,12 @@ The server is now ready to receive requests! (TODO: put some more documentation 
 ### iDevice <a name = "deploy-idevice"></a>
 For each computer we want to control, we'll need a copy of
 [this shortcut](https://www.icloud.com/shortcuts/6140e36672464b69a6c5fbea1621b785) (which we'll
-refer to as the computer-specific script). Upon importing it, you'll be asked for the ip and port of
-the computer and the key used. We'll also want to put the name of the computer it's connecting to in
-the title. The placeholder for this name is '{computerName}'--it should be changed to something more
-descriptive, like 'laptop'. Alright, now we have everything set up and we can finally start making
-shortcuts! Checkout the [using in shortcuts](#using-in-shortcuts) section to see how. You can also
-checkout the [example setups](#example-setups) section for some examples.
+refer to as the computer-specific shortcut). Upon importing it, you'll be asked for the ip and port
+of the computer and the key used. We'll also want to put the name of the computer it's connecting
+to in the title. The placeholder for this name is '{computerName}'--it should be changed to
+something more descriptive, like 'laptop'. Alright, now we have everything set up and we can finally
+start making shortcuts! Checkout the [using in shortcuts](#using-in-shortcuts) section to see how.
+You can also checkout the [example setups](#example-setups) section for some examples.
 
 ## Using in Shortcuts <a name = "using-in-shortcuts"></a>
 Once the server is up and the necessary shortcuts are on your iDevice, we can start making requests
