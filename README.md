@@ -17,7 +17,7 @@ on a computer remotely from the Shortcuts iOS app. Licensed under [MIT](./LICENS
 
 ## About <a name = "about"></a>
 Remote-control is primary intended for use with the iOS shortcuts app (and may be
-limited in various ways to maintain Shortcuts comparability). Currently, this is only compatible
+limited in various ways to maintain Shortcuts compatibility). Currently, this is only compatible
 with Windows. You will also have to make DHCP reservations for the computers that you wish to
 remotely control.
 
