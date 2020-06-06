@@ -148,5 +148,6 @@ The security that Remote-control uses is minimal and is not sufficient to protec
 internet. It is recommended to only use Remote-control on trusted local networks.
 
 Remote-control is also prone to breaking during time changes. This is a result of the
-aforementioned 'minimal security' that  relies on the current time. Remote-control may not work
-100% of the time in its current state. This is being worked on and will eventually be resolved.
+aforementioned 'minimal security' that  relies on the current time (and is difficult to make better
+due to the lack of functionality in Shortcuts). Remote-control may not work 100% of the time in its
+current state. This is being worked on and will eventually be resolved.
