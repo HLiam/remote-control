@@ -116,7 +116,7 @@ checkout the [example setups](#example-setups) section for some examples.
 ## Using in Shortcuts <a name = "using-in-shortcuts"></a>
 Once the server is up and the necessary shortcuts are on your iDevice, we can start making requests
 to the server. To do this, we'll call the computer-specific shortcut of the computer we want to
-control and set it's input to some text. The text we give it is a path on the server:
+control and set it's input to some text. The text we give it is a path on the server,
 ```
 https://google.com/search/for/something
                   ^^^^^^^^^^^^^^^^^^^^^
