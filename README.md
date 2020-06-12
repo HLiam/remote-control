@@ -62,6 +62,9 @@ Create a file in the directory called `Rocket.toml` with the following text:
 address = "localhost"
 port = {yourPort}
 workers = 1
+
+[development]
+log = "debug"
 ```
 Where `{yourPort}` is a port number (it can be anything).
 
