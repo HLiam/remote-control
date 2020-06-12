@@ -59,7 +59,7 @@ the `.env` file if we would like, but we'll be using `Rocket.toml` for the confi
 Create a file in the directory called `Rocket.toml` with the following text:
 ```toml
 [global]
-address = "localhost"
+address = "0.0.0.0"
 port = {yourPort}
 workers = 1
 
