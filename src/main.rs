@@ -1,11 +1,8 @@
 #![windows_subsystem = "windows"]
 #![feature(decl_macro)]
 
-use std::cmp;
-use std::convert::TryFrom;
+use std::convert::{TryFrom, TryInto};
 use std::fmt;
-use std::str::FromStr;
-use std::string::ToString;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
@@ -72,7 +69,7 @@ impl Nonce {
         Self::new(LAST_USED_NONCE.load(Ordering::SeqCst))
     }
 
-    /// Sets the last used nonce.
+    /// Sets the last used nonce to this `Nonce`.
     fn set_last_used(self) {
         LAST_USED_NONCE.store(*self.inner(), Ordering::SeqCst);
     }
@@ -91,18 +88,23 @@ impl Nonce {
     fn validity(self) -> Result<(), Error> {
         if self <= Nonce::get_last_used() {
             Err(Error::NonceFromPast)
-        } else if self > time_since_epoch() {
+        } else if self > Nonce::new(time_since_epoch()) {
             Err(Error::NonceFromFuture)
         } else {
             Ok(())
         }
     }
 
-    /// Generates a secret using this `Nonce` and a `key`.
+    /// Generates a secret using this `Nonce` and `key`.
+    ///
+    /// Currently, this is done by converting the nonce to a string (in decimal), and concatenating
+    /// it with the key (nonce + key), then hashing it with SHA 512. This (namely converting the
+    /// nonce to a string) is done as that is what is most idiomatic for Shortcuts.
     fn generate_secret(self, key: impl AsRef<[u8]>) -> String {
         let mut hasher = Sha512::new();
         hasher.input(self.inner().to_string());
         hasher.input(key);
+        // hasher.result()
         hex::encode(hasher.result())
     }
 }
@@ -110,35 +112,17 @@ impl Nonce {
 impl TryFrom<&request::Request<'_>> for Nonce {
     type Error = Error;
     fn try_from(r: &request::Request) -> Result<Self, Self::Error> {
-        match r.headers().get_one("Nonce") {
-            Some(n) => Nonce::from_str(n),
-            None => Err(Error::Missing),
-        }
+        r.headers()
+            .get_one("Nonce")
+            .map_or(Err(Error::Missing), |n| n.try_into())
     }
 }
 
-impl FromStr for Nonce {
-    type Err = Error;
-    fn from_str(s: &str) -> Result<Self, Error> {
+impl TryFrom<&str> for Nonce {
+    type Error = Error;
+
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         s.parse::<u64>().map(Self).map_err(|_| Error::Invalid)
-    }
-}
-
-impl ToString for Nonce {
-    fn to_string(&self) -> String {
-        self.0.to_string()
-    }
-}
-
-impl PartialEq<u64> for Nonce {
-    fn eq(&self, rhs: &u64) -> bool {
-        self.inner() == rhs
-    }
-}
-
-impl PartialOrd<u64> for Nonce {
-    fn partial_cmp(&self, rhs: &u64) -> Option<cmp::Ordering> {
-        Some(self.inner().cmp(rhs))
     }
 }
 
@@ -157,7 +141,7 @@ impl<'a, 'r> request::FromRequest<'a, 'r> for Secret {
     fn from_request(r: &'a request::Request<'r>) -> Outcome<Self, Self::Error> {
         let user_secret = match r.headers().get_one("Secret") {
             Some(s) => s,
-            None => return Self::Error::Missing.into(),
+            None => return Error::Missing.into(),
         };
         let nonce = match Nonce::try_from(r) {
             Ok(i) => i,
@@ -165,15 +149,13 @@ impl<'a, 'r> request::FromRequest<'a, 'r> for Secret {
         };
 
         if let Err(e) = nonce.validity() {
-            return e.into();
+            e.into()
+        } else if user_secret != nonce.generate_secret(&*KEY) {
+            Self::Error::Invalid.into()
+        } else {
+            nonce.set_last_used();
+            Outcome::Success(Secret::new())
         }
-        if user_secret != nonce.generate_secret(&*KEY) {
-            return Self::Error::Invalid.into();
-        }
-
-        nonce.set_last_used();
-
-        Outcome::Success(Secret::new())
     }
 }
 
@@ -202,10 +184,7 @@ fn sleep_display(_secret: Secret) -> Status {
 
 #[get("/minimize")]
 fn minimize(_secret: Secret) -> Status {
-    match util::minimize_windows() {
-        Ok(_) => Status::Accepted,
-        Err(_) => Status::InternalServerError,
-    }
+    util::minimize_windows().map_or(Status::InternalServerError, |_| Status::Accepted)
 }
 
 /// Return the time, in seconds, since the epoch (the Unix epoch is used).
