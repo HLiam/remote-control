@@ -107,7 +107,7 @@ Once all the [setup](#getting-started) is done, we're ready to deploy!
 To deploy the server, just use the deploy script
 (TODO)
 ```bash
-py ./deploy.py
+python ./deploy.py
 ```
 
 This will build and deploy the server (and set Rocket's environment to 'production'). The server
@@ -155,7 +155,7 @@ TODO
 ## Uninstall
 To uninstall, run the deploy script with the `--uninstall` flag (TODO: add this; kill it and remove startup stuff)
 ```bash
-py ./deploy.py --uninstall
+python ./deploy.py --uninstall
 ```
 
 ## Disclaimer <a name = "disclaimer"></a>
