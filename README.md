@@ -39,10 +39,10 @@ shortcuts on the iDevice(s) we want to control them from.
 ### Computer <a name = "getting-started-computer"></a>
 First, we'll need to setup the server on the computer we want to remotely control.
 
-You'll need to install the nightly channel unless you already have it installed (we install
-clippy too because who doesn't like clippy?)
+You'll need to install the nightly channel unless you already have it installed.
+
 ```bash
-rustup toolchain install nightly --component clippy
+rustup toolchain install nightly
 ```
 
 We set nightly to be the default (only for this project)
