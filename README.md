@@ -137,10 +137,10 @@ https://google.com/search/for/something
 ```
 so it will always start with a `/` and be followed by the action you want to perform. Available
 actions are:
-- `sleep` (put computer to sleep)
-- `sleep_display` (turn display off)
-- `minimize_windows` (minimize all open windows)
-- `ping` (ping the computer to see if it's awake, connected to internet, and the server's running)
+- `sleep` - put computer to sleep
+- `sleep_display` - turn display off
+- `minimize_windows` - minimize all open windows
+- `ping` - ping the computer to see if it's awake, connected to internet, and the server's running
 
 For example, if we wanted to sleep the display, we would run the `_connectTo{computerName}Shortcut`
 shortcut and set its input to `/sleep_display`.
