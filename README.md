@@ -7,14 +7,14 @@ on a computer remotely from the Shortcuts \*OS app. Licensed under [MIT license]
 ## Table of Contents & Quick Links <a name = "table-of-contents"></a>
 - [About](#about)
 - [Features](#features)
-- [Getting Started](#getting-started) ([computer](#getting-started-computer) ([iDevice](#getting-started-idevice)))
-- [Deploy (& Build)](#deploy) ([computer](#deploy-computer)) ([iDevice](#deploy-idevice))
+- [Getting Started](#getting-started) [[computer](#getting-started-computer)] [[iDevice](#getting-started-idevice)]
+- [Deploy (& Build)](#deploy) [[computer](#deploy-computer)] [[iDevice](#deploy-idevice)]
 - [Using in Shortcuts](#using-in-shortcuts)
 - [Example Setups](#example-setups)
 - [Uninstall](#uninstall)
 - [Disclaimer](#disclaimer)
-- Quick links: ([master shortcut](https://www.icloud.com/shortcuts/761eb83ac4e84b479f4e016ea4e702aa))
-               ([computer-specific shortcut](https://www.icloud.com/shortcuts/6140e36672464b69a6c5fbea1621b785))
+- Quick links: [[master shortcut](https://www.icloud.com/shortcuts/761eb83ac4e84b479f4e016ea4e702aa)]
+               [[computer-specific shortcut](https://www.icloud.com/shortcuts/6140e36672464b69a6c5fbea1621b785)]
 
 
 ## About <a name = "about"></a>
@@ -55,6 +55,11 @@ Clone the repository
 git clone https://github.com/hliam/remote-control
 ```
 
+Install the Python requirments
+```bash
+python3 -m pip install -r requirements.txt
+```
+
 We'll need to create a file called `.env` in that directory that contains the text `KEY={yourKey}`
 where '{yourKey}' is the verification key we want to use. This key can be anything we want.
 
@@ -71,7 +76,7 @@ workers = 1
 [development]
 log = "debug"
 ```
-Where `{yourPort}` is a port number (any unused port is valid).
+Where `{yourPort}` is the port you want to host on.
 
 Now that everything is set up on the computer, we'll need to make a DHCP reservation for it (only
 follow this if you have DHCP enabled (as opposed to static ips)--if you don't know if you have DHCP
@@ -157,12 +162,3 @@ To uninstall, run the deploy script with the `--uninstall` flag (TODO: add this;
 ```bash
 python ./deploy.py --uninstall
 ```
-
-## Disclaimer <a name = "disclaimer"></a>
-The security that Remote-control uses is minimal and is not sufficient to protect again the open
-internet. It is recommended to only use Remote-control on trusted local networks.
-
-Remote-control is also prone to breaking during time changes. This is a result of the
-aforementioned 'minimal security' that  relies on the current time (and is difficult to make better
-due to the lack of functionality in Shortcuts). Remote-control may not work 100% of the time in its
-current state. This is being worked on and will eventually be resolved.
